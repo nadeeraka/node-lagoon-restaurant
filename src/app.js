@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const path = require("path");
+const db = require("../db/connect");
 
 // custom vars
 const PORT = 8000;
