@@ -4,11 +4,16 @@ const mongoose = require("mongoose");
 const env = process.env.node_env === "development";
 
 try {
-  mongoose.connect(driver.aws, { useNewUrlParser: true }).then(result => {
-    if (result) {
-      console.log("aws connect");
-    }
-  });
+  mongoose
+    .connect(
+      "mongodb+srv://nick:abc@cluster0-2or4b.mongodb.net/test?retryWrites=true&w=majority",
+      { useNewUrlParser: true }
+    )
+    .then(result => {
+      if (result) {
+        console.log("aws connect..!");
+      }
+    });
 } catch (error) {
   if (error) {
     mongoose
