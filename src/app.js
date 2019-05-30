@@ -14,6 +14,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(mainRoutes);
 // bodyParser
 app.use(bodyParser.urlencoded({ extended: false }));
+// connect to db
+db();
 
 // set ejs
 app.set("view engine", "ejs");
