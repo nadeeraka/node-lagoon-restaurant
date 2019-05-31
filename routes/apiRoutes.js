@@ -31,35 +31,29 @@ router.post(
       return true;
     })
     .custom((value, { req }) => {
-      if (value === "nick@nick.com") {
-        throw new Error("this email is forbidden ");
-      }
-      return true;
-    })
-    .custom((value, { req }) => {
-      User.findOne({ email: value }).then(user => {
-        if (user) {
-          throw new Error("this email is already taken ");
+      return User.findOne({ email: value }).then(result => {
+        if (result) {
+          return Promise.reject("email already use");
         }
-        return true;
-      }),
-        body("password")
-          .not()
-          .isEmpty()
-          .trim()
-          .escape()
-          .isAlphanumeric()
-          .withMessage("please use text and numbers for password")
-          .isLength({ min: 3 })
-          .withMessage("Opps!  password too short")
-          .isLength({ max: 20 })
-          .withMessage("Opps!  password too long "),
-        body("cpassword").custom((value, { req }));
-      if (value !== req.body.password) {
-        throw new Error("password have to match ");
-      }
-      return true;
+      });
     }),
+  body("password")
+    .not()
+    .isEmpty()
+    .trim()
+    .escape()
+    .isAlphanumeric()
+    .withMessage("please use text and numbers for password")
+    .isLength({ min: 3 })
+    .withMessage("Opps!  password too short")
+    .isLength({ max: 20 })
+    .withMessage("Opps!  password too long "),
+  body("cpassword").custom((value, { req }) => {
+    if (value !== req.body.password) {
+      throw new Error("Password have to match !");
+    }
+    return true;
+  }),
 
   mainController.postLogin
 );
