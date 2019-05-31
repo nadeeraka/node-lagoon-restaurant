@@ -55,6 +55,43 @@ router.post(
     return true;
   }),
 
+  mainController.postSignup
+);
+
+// ! login
+
+router.post(
+  "/login",
+  body("email")
+    .trim()
+    .withMessage("Don't add white space")
+    .escape()
+    .withMessage("escape")
+    .isEmail()
+    .withMessage("Not valid email")
+    .custom((value, { req }) => {
+      if (value === "test@test.com") {
+        throw new Error("this email is forbidden ");
+      }
+
+      return true;
+    })
+    .custom((value, { req }) => {
+      return User.findOne({ email: value }).then(result => {
+        if (!result) {
+          throw new Error(" First you may need to Signup ");
+        }
+      });
+    }),
+  body("password")
+    .trim()
+    .escape()
+    .isAlphanumeric()
+    .withMessage("please use text and numbers for password")
+    .isLength({ min: 3 })
+
+    .isLength({ max: 20 }),
+
   mainController.postLogin
 );
 
