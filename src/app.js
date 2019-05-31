@@ -4,16 +4,20 @@ const path = require("path");
 const db = require("../db/connect");
 const bodyParser = require("body-parser");
 const mainRoutes = require("../routes/basicRoues");
+const apiRouts = require("../routes/apiRoutes");
 
 // custom vars
 const PORT = 8000;
 
 // get permission access  public folder
 app.use(express.static(path.join(__dirname, "public")));
-// custom routes
-app.use(mainRoutes);
 // bodyParser
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// custom routes
+app.use(mainRoutes);
+app.use(apiRouts);
+
 // connect to db
 db();
 
